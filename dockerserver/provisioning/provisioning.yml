@@ -1,0 +1,11 @@
+---
+- name: Prepare nginx docker server
+  hosts: vagrant
+  connection: local
+  become: yes
+  become_method: sudo
+  vars_files:
+      - variables-provisioning.yml
+  roles:
+    - nginx
+    - angstwad.docker_ubuntu

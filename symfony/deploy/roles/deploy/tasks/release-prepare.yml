@@ -1,0 +1,29 @@
+- name: Create project session symlink
+  command: docker exec --user "{{ userId.stdout }}" "php{{ nextPgsdziuraPort}}" ln -s /var/sessions /var/www/var/sessions/prod
+  ignore_errors: True
+  register: sessionSymlink
+
+- name: Create database schema
+  command: docker exec --user "{{ userId.stdout }}" "php{{ nextPgsdziuraPort}}"  php bin/console doctrine:schema:create -q
+  ignore_errors: True
+#  when: buildNumber|int == 1
+  register: schemaCreate
+
+- name: Database schema update
+  command: docker exec --user "{{ userId.stdout }}" "php{{ nextPgsdziuraPort}}" php bin/console doctrine:schema:update --force -q
+  ignore_errors: True
+#  when: buildNumber|int > 1
+  register: databaseUpdate
+
+- name: Assests install
+  command: docker exec --user "{{ userId.stdout }}" "php{{ nextPgsdziuraPort}}" php bin/console assets:install -q
+  ignore_errors: True
+  register: assetsInstall
+
+- name: Define variable when prepare project failed
+  set_fact:
+    failRelease: true
+  when: (assetsInstall.rc > 0) or
+        (sessionSymlink is defined and sessionSymlink.rc > 0) or
+        (schemaCreate is defined and schemaCreate.rc > 0) or
+        (databaseUpdate is defined and databaseUpdate.rc > 0)

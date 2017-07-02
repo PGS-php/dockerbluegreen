@@ -1,0 +1,9 @@
+dockerserver/.vagrant
+.bash_history
+.idea
+deploy.retry
+build.tar
+vendor
+artefact
+symfony/var/*
+symfony/dockerinfo.yml

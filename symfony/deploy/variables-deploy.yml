@@ -1,0 +1,8 @@
+owner: vagrant
+group: vagrant
+artefactFileName: package.tar
+projectVariablesFile: dockerinfo.yml
+dockerProductionComposeFile: docker-compose.prod.yml
+projectRoot: /var/www
+projectDir: artefact
+projectPath: "{{ projectRoot }}/server"

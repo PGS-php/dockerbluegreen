@@ -1,0 +1,15 @@
+- name: Build docker containers
+  environment:
+    PROJECT_PATH: "{{projectPath}}/{{ nextPgsdziuraVersion }}"
+    NEXT_VERSION_PORT: "{{ nextPgsdziuraPort }}"
+    MYSQL_DATA_DIR: "{{projectPath}}/{{ nextPgsdziuraVersion }}/data"
+    SESSION_DIR: "{{projectPath}}/sessions"
+    USERID: "{{ userId.stdout }}"
+  docker_service:
+    project_name: "{{ nextPgsdziuraVersion }}"
+    project_src: "{{projectPath}}"
+    files:
+      - "{{ nextPgsdziuraVersion }}/docker-compose.yml"
+      - "{{ nextPgsdziuraVersion }}/docker-compose.prod.yml"
+    services: nginx
+    state: present

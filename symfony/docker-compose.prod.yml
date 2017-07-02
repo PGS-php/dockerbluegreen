@@ -1,0 +1,28 @@
+data:
+  restart: always
+  volumes:
+    - "${PROJECT_PATH}:/var/www"
+
+php:
+  container_name: "php${NEXT_VERSION_PORT}"
+  environment:
+    SYMFONY_ENV: prod
+  restart: always
+  volumes:
+    - ${SESSION_DIR}:/var/sessions
+  entrypoint: "php-fpm"
+  command: ""
+
+nginx:
+  ports:
+    - "${NEXT_VERSION_PORT}:80"
+  restart: always
+
+mysql:
+  volumes:
+    - "${MYSQL_DATA_DIR}:/var/lib/mysql"
+  container_name: "mysql${NEXT_VERSION_PORT}"
+  environment:
+    MYSQL_ROOT_PASSWORD: "${APP_NAME}"
+    MYSQL_DATABASE: "${APP_NAME}"
+  restart: always

@@ -1,0 +1,14 @@
+- name: Remove started containers
+  environment:
+    PROJECT_PATH: "{{ projectPath }}/{{ nextPgsdziuraVersion }}"
+    NEXT_VERSION_PORT: "{{ nextPgsdziuraPort }}"
+    MYSQL_DATA_DIR: "{{ projectPath }}/{{ nextPgsdziuraVersion }}/data"
+    SESSION_DIR: "{{ projectPath }}/sessions"
+  docker_service:
+    project_name: "{{ dockerProjectName }}"
+    project_src: "{{projectPath}}"
+    files:
+      - "{{ dockerProjectName }}/docker-compose.yml"
+      - "{{ dockerProjectName }}/{{ dockerProductionComposeFile }}"
+    state: absent
+  register: closedContainer

@@ -1,0 +1,41 @@
+- name: Get current build number
+  ignore_errors: true
+  shell: cat {{projectPath}}/build
+  register: build
+
+- name: Define next build number when file not exist
+  set_fact:
+    buildNumber=1
+  when: build.stdout == ''
+
+- name: Define next build number when file exist
+  set_fact:
+    buildNumber={{ build.stdout|int + 1 }}
+  when: build.stdout|int >= 0
+
+- name: Create file to save current build number
+  file: dest="{{projectPath}}/build" state=touch
+  when: build.stdout == ''
+
+- name: Initial content build number file
+  lineinfile: dest="{{projectPath}}/build" state=present line='0'
+  when: build.stdout == ''
+
+- name: Define variables when buildNumber is odd
+  set_fact:
+    currentPgsdziuraVersion=green
+    nextPgsdziuraVersion=blue
+  when: "{{ buildNumber|int }} is odd"
+
+- name: Define variables when buildNumber is even
+  set_fact:
+    currentPgsdziuraVersion=blue
+    nextPgsdziuraVersion=green
+  when: "{{ buildNumber|int }} is even"
+
+- name: Definde next port to docker nginx
+  set_fact: nextPgsdziuraPort="{{ buildNumber|int + 10000 }}"
+
+- name: Get logged user id
+  shell: id -u
+  register: userId

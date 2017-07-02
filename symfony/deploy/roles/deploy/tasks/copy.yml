@@ -1,0 +1,2 @@
+- name: Transfer project dir
+  copy: src=../{{projectDir}}/package.tar dest={{projectRoot}}/server force=true mode=755 owner={{ owner }} group={{ group }}

@@ -1,0 +1,4 @@
+- name: Copy database
+  shell: "mkdir -p {{projectPath}}/{{ nextPgsdziuraVersion }}/data/symfony && cp -R {{projectPath}}/{{ currentPgsdziuraVersion }}/data/symfony {{projectPath}}/{{ nextPgsdziuraVersion }}/data && chmod -R 777 {{projectPath}}/{{ nextPgsdziuraVersion }}/data && chown -R vagrant:vagrant {{projectPath}}/{{ nextPgsdziuraVersion }}/data"
+  sudo: yes
+  when: buildNumber|int > 1

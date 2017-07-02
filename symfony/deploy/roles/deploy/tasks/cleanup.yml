@@ -1,0 +1,9 @@
+- name: Remove artefact directory
+  file: path={{projectPath}}/package state=absent
+
+- name: Remove release directory
+  file: path={{projectPath}}/{{ nextPgsdziuraVersion }} state=absent
+  sudo: yes
+
+- name: Create release directory
+  file: path={{projectPath}}/{{ nextPgsdziuraVersion }} state=directory

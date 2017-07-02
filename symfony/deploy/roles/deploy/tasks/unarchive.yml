@@ -1,0 +1,5 @@
+- name: Uncompres package
+  unarchive: src="{{projectPath}}/{{ artefactFileName }}" dest="{{projectPath}}" copy=no
+
+- name: Uncompres project build
+  unarchive: src="{{projectPath}}/package/build.tar" dest="{{projectPath}}/{{ nextPgsdziuraVersion }}" copy=no

@@ -1,0 +1,9 @@
+---
+- name: deploy
+  hosts: vagrant
+  vars_files:
+    - variables-deploy.yml
+    - ../dockerinfo.yml
+  environment: "{{ envVars }}"
+  roles:
+    - deploy

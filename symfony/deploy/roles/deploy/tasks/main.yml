@@ -1,0 +1,43 @@
+- name: Copy artefact build to server
+  include: copy.yml
+
+- name: Prepare necessary variables
+  include: prepare.yml
+
+- name: Prepare dirs to release
+  include: cleanup.yml
+
+- name: Unarchive artefact
+  include: unarchive.yml
+
+- name: Load new docker images
+  include: docker-images.yml
+
+- name: Prepare database
+  include: database.yml
+
+- name: Start docker container
+  include: start-container.yml dockerProjectName="{{ nextPgsdziuraVersion }}"
+
+- pause: seconds=10
+
+- name: Release prepare (symlinks, database update e.t.c)
+  include: release-prepare.yml
+#
+- name: Close started container when release prepare failed
+  include: stop-container.yml dockerProjectName="{{ nextPgsdziuraVersion }}"
+  when: failRelease is defined
+#
+- name: Stop deploy
+  fail: msg="Start project problem (problem with session symlink or database or smoke test)"
+  when: closedContainer.changed == true
+
+- name: reconfiguration nginx
+  include: nginx.yml
+
+- name: Close started container when release prepare failed
+  include: stop-container.yml dockerProjectName="{{ currentPgsdziuraVersion }}"
+  when: buildNumber|int > 1
+
+- name: Save actual build number
+  replace: dest="{{projectPath}}/build" regexp="{{ buildNumber|int -1 }}" replace="{{ buildNumber }}"

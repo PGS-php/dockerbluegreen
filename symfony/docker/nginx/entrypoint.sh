@@ -6,6 +6,5 @@
 [ -z "${PROJECT_INDEX_FILE}" ] && echo "\$PROJECT_INDEX_FILE is not set" || sed -i "s/PROJECT_INDEX_FILE/${PROJECT_INDEX_FILE}/" /etc/nginx/conf.d/default.conf
 [ -z "${PROJECT_DEV_INDEX_FILE}" ] && echo "\$PROJECT_DEV_INDEX_FILE is not set" || sed -i "s/PROJECT_DEV_INDEX_FILE/${PROJECT_DEV_INDEX_FILE}/" /etc/nginx/conf.d/default.conf
 
-
 # Start nginx
 /usr/sbin/nginx -g "daemon off;"

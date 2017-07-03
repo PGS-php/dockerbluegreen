@@ -13,9 +13,8 @@ function buildImages {
     VERSION=$2
     USERID=${3:-1000}
 
-    docker build -t "${NAME}:${VERSION}-php56" --build-arg USERID="$USERID" docker/php56
+    docker build -t "${NAME}:${VERSION}-php70" --build-arg USERID="$USERID" docker/php70
     docker build -t "${NAME}:${VERSION}-nginx" docker/nginx
-    docker build -t "${NAME}:${VERSION}-ansible" docker/ansible
 }
 
 function runBuild {
@@ -52,8 +51,9 @@ function projectInstall {
 if [[ $TASK_NAME == '' ]]; then
     echo -e "Available commands:";
     echo -e "'build-images' - building docker images";
+    echo -e "'build-images' - building project";
     echo -e "'run' - is running dev env and attaching tty";
-    echo -e "'build' - is running build ant tasks based on php 56";
+    echo -e "'build' - is running build ant tasks based on php 70";
 fi
 
 case $TASK_NAME in
@@ -64,10 +64,10 @@ case $TASK_NAME in
         projectInstall "${APP_NAME}" "${APP_VERSION}"
         ;;
     'build')
-        runBuild "${APP_NAME}:${APP_VERSION}-php56"
+        runBuild "${APP_NAME}:${APP_VERSION}-php70"
         ;;
     'run')
-        runInBackground "${APP_NAME}:${APP_VERSION}-php56"
+        runInBackground "${APP_NAME}:${APP_VERSION}-php70"
         ;;
 esac
 

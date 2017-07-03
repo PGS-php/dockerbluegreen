@@ -13,8 +13,8 @@
 - name: Load new docker images
   include: docker-images.yml
 
-- name: Prepare database
-  include: database.yml
+#- name: Prepare database
+#  include: database.yml
 
 - name: Start docker container
   include: start-container.yml dockerProjectName="{{ nextPgsdziuraVersion }}"
